@@ -67,7 +67,7 @@ The app demonstrates how to:
     -   Node.js
     -   Express.js
     -   JWT for secure API authorization
-    -       Axios for external API calls
+    -           Axios for external API calls
 -   **Frontend:**
     -   React.js
     -   Axios for API calls
