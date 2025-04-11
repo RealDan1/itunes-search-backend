@@ -23,7 +23,11 @@ const searchItunes = async (req, res) => {
       const itunesResponse = await axios.get('https://itunes.apple.com/search?', {
         params: { term: searchTerm, country: 'ZA', media: mediaType }, // Sending query parameters
       });
-      // removed the broken second jwt.sign({ id }, ...)  (no undefined `id`)
+      // re‑sign using payload.id so `id` is defined, but overwrite the same `token` variable
+      token = jwt.sign({ id: payload.id }, process.env.JWT_SECRET, {
+        //
+        algorithm: 'HS256',
+      });
       //return the result and the token in the response object
       res.json({ itunesResponse: itunesResponse.data, token: token });
     } catch (error) {
@@ -38,12 +42,6 @@ const searchItunes = async (req, res) => {
     try {
       const itunesResponse = await axios.get('https://itunes.apple.com/search', {
         params: { term: searchTerm, country: 'ZA', media: mediaType }, // Sending query parameters
-      });
-
-      // re‑sign the token if you want to rotate it:
-      const token = jwt.sign({ id }, process.env.JWT_SECRET, {
-        //declare `token` here so it's in scope
-        algorithm: 'HS256',
       });
 
       //console.log the response for testing
