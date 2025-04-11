@@ -13,8 +13,7 @@ const searchItunes = async (req, res) => {
       id: Date.now(),
     };
     // Generate the token for the first time -  sign the token with the payload
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      // use payload directly instead of JSON.stringify(payload)
+    const token = jwt.sign(JSON.stringify(payload), process.env.JWT_SECRET, {
       algorithm: 'HS256',
     });
 
