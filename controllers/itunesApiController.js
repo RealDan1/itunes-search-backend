@@ -3,7 +3,7 @@ const axios = require('axios');
 
 const searchItunes = async (req, res) => {
   const isFirstRequest = req.isFirstRequest;
-  const { searchTerm, mediaType } = req.params; // deconstruct the searchTerm and mediaType from the req.params.
+  const { searchTerm, mediaType } = req.query; // deconstruct the searchTerm and mediaType from the req.query.
 
   if (isFirstRequest) {
     //create a new payload with id Date.now - just to have something to sign into the token - later we can set the token to expire after a certain amount of time, for now this works
@@ -13,7 +13,7 @@ const searchItunes = async (req, res) => {
       id: Date.now(),
     };
     // Generate the token for the first time -  sign the token with the payload
-    const token = jwt.sign(JSON.stringify(payload), process.env.JWT_SECRET, {
+    let token = jwt.sign(JSON.stringify(payload), process.env.JWT_SECRET, {
       algorithm: 'HS256',
     });
 
@@ -45,10 +45,10 @@ const searchItunes = async (req, res) => {
       });
 
       //console.log the response for testing
-      console.log({ itunesResult: itunesResponse.data, token: token });
+      console.log({ itunesResponse: itunesResponse.data, token: token });
 
-      //return the result and the token in the response object
-      res.json({ itunesResult: itunesResponse.data, token: token });
+      //return the result and the token in the response object(removed , token: token redundant)
+      res.json({ itunesResponse: itunesResponse.data });
     } catch (error) {
       console.log(error);
       res.json(error);
